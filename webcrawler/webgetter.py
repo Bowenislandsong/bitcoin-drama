@@ -26,7 +26,7 @@ class webgetter():
             if i ==0:
                 self.data = tx
             else:
-                self.data["txs"].append(tx["txs"])
+                self.data["txs"].extend(tx["txs"])
             time.sleep(random.uniform(0.1, 1))
         
         
