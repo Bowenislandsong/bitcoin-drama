@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.dates
+from scipy.io import savemat
 
 import collections as col
 from datetime import date, datetime
@@ -14,6 +15,8 @@ sampleD = "../data/sample.json"
 approxUSD = 60000
 bitV = 1e8
 
+
+
 def readJson(jsf):
     with open(jsf) as f:
         return json.load(f)
@@ -25,8 +28,7 @@ def getTimeVsValue(jsc):
         d[u2t(tx["time"])] = [x/bitV*approxUSD for x in txOutputs(tx).values()]
     return dict(sorted(d.items()))
 
-def plottxTvsV(data):
-    # f,b = None,None
+def plottxTvsV(data,matname):
     res = {}
     for k,v in data.items():
         d = k.strftime('%Y-%m-%d')
@@ -34,29 +36,23 @@ def plottxTvsV(data):
             res[d] += 1
         else:
             res[d] = 1
-        # if not f or not b:
-        #     f = k
-        #     b = k
-        # if k < f:
-        #     f = k
-        # if k > b:
-        #     b = k
-    print(res)
-    plt.plot(list(res.keys()), list(res.values()))
-    plt.show()
+    savemat(matname+".mat",{"x":list(res.keys()), "y":list(res.values())})
+    # print(res)
+    # plt.plot(list(res.keys()), list(res.values()))
+    # plt.show()
 
     
-def plotInterval(sortedData):
+def plotInterval(sortedData,matname):
     pre = list(sortedData.keys())[0]
     inter = []
     for k,v in sortedData.items():
         inter.append((k-pre).seconds/60)
         pre = k
-    
-    plt.hist(inter,bins=24*60)
-    plt.show()
+    savemat(matname+".mat",{"x":inter})
+    # plt.hist(inter,bins=24*60)
+    # plt.show()
 
-def plotToD(data):
+def plotToD(data,matname):
     res = {}
     for d in data.keys():
         h = d.hour
@@ -65,12 +61,20 @@ def plotToD(data):
         else:
             res[h] = 1
     res = dict(sorted(res.items()))
-    plt.plot(list(res.keys()),list(res.values()))
-    plt.show()
+    savemat(matname+".mat",{"x":list(res.keys()), "y":list(res.values())})
+    # plt.plot(list(res.keys()),list(res.values()))
+    # plt.show()
 
 
 if __name__ == '__main__':
-    # plottxTvsV(getTimeVsValue(readJson(depositData)))
-    # plottxTvsV(getTimeVsValue(readJson(wdData)))
-    # plotInterval(getTimeVsValue(readJson(wdData)))
-    plotToD(getTimeVsValue(readJson(wdData)))
+    dData = getTimeVsValue(readJson(depositData))
+    wData = getTimeVsValue(readJson(wdData))
+
+    plottxTvsV(dData,"trend_dep")
+    plottxTvsV(wData,"trend_width")
+
+    plotInterval(dData,"interval_dep")
+    plotInterval(wData,"interval_width")
+
+    plotToD(dData,"timeofday_dep")
+    plotToD(wData,"timeofday_width")
