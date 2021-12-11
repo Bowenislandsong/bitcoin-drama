@@ -23,7 +23,7 @@ def readJson(jsf):
 
 def getTimeVsValue(jsc):
     d = {}
-    u2t = lambda ut : datetime.utcfromtimestamp(ut) # strftime('%Y-%m-%d %H:%M:%S')
+    u2t = lambda ut : datetime.fromtimestamp(ut) # strftime('%Y-%m-%d %H:%M:%S')
     for tx in jsc["txs"]:
         d[u2t(tx["time"])] = [x/bitV*approxUSD for x in txOutputs(tx).values()]
     return dict(sorted(d.items()))
