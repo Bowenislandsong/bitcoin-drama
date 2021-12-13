@@ -13,10 +13,10 @@ g = []
 for p = 0.4:0.05:1
 g = [g,prob(ni,p,q,o,1)]
 end
-plot(0.4:0.05:1,g)
+plot(0.4:0.05:1,g,'LineWidth',4)
 xlabel("Probability of L's True Positive")
 ylabel("Probability")
-set(gca,'FontSize', 36);
+set(gca,'FontSize', 42);
 
 
 o = 2;
@@ -28,8 +28,8 @@ h = []
 for q = 0:0.05:0.5
 h = [h,prob(ni,p,q,o,1)]
 end
-plot(0:0.05:0.5,h)
-set(gca,'FontSize', 36);
+plot(0:0.05:0.5,h,'LineWidth',4)
+set(gca,'FontSize', 42);
 xlabel("Probability of L's False Positive")
 ylabel("Probability")
 
@@ -42,8 +42,8 @@ h = []
 for ni = 2:10
 h = [h,prob(ni,p,q,o,1)]
 end
-plot(2:10,h)
-set(gca,'FontSize', 36);
+plot(2:10,h,'LineWidth',4)
+set(gca,'FontSize', 42);
 % title("Average Number of Transactions in Each Observation")
 xlabel("Avg. # of Trans. in Each Observation")
 ylabel("Probability")
@@ -59,9 +59,9 @@ h = []
 for ctp = 0:0.05:0.9
 h = [h,prob(ni,p,q,o,ctp)]
 end
-plot(0:0.05:0.9,h)
+plot(0:0.05:0.9,h,'LineWidth',4)
 % title("Percentage of |C_T| Over |C|")
-set(gca,'FontSize', 36);
+set(gca,'FontSize', 42);
 xlabel("Ratio of |C_T| Over |C|")
 ylabel("Probability")
 
